@@ -1,0 +1,7 @@
+{
+  "name": "schema-outputkit",
+  "version": "0.1.0",
+  "description": "Canonical LLM output contracts, capability-based adaptation, validation and bounded recovery.",
+  "license": "MIT",
+  "hooks": "./hooks/development.json"
+}

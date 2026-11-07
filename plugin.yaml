@@ -1,0 +1,5 @@
+name: schema-outputkit
+version: 0.1.0
+description: Schema-first LLM development standards loaded on demand for Hermes Agent.
+provides_hooks:
+  - pre_llm_call

@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CODEBUDDY_PLUGIN_ROOT:-${CLAUDE_PLUGIN_ROOT:-${extensionPath}}}/scripts/hook.py\""
+          }
+        ]
+      }
+    ]
+  }
+}

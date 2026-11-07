@@ -1,0 +1,12 @@
+{
+  "name": "schema-outputkit",
+  "interface": { "displayName": "schema-outputkit" },
+  "plugins": [
+    {
+      "name": "schema-outputkit",
+      "source": { "source": "local", "path": "./" },
+      "category": "Developer Tools",
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" }
+    }
+  ]
+}

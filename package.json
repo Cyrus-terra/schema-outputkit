@@ -1,0 +1,9 @@
+{
+  "name": "schema-outputkit",
+  "version": "0.1.0",
+  "description": "Schema-first LLM development standards for coding assistants.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "openclaw": { "extensions": ["./index.js"] }
+}

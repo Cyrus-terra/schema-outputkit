@@ -1,0 +1,12 @@
+{
+  "name": "schema-outputkit",
+  "owner": { "name": "schema-outputkit contributors" },
+  "plugins": [
+    {
+      "name": "schema-outputkit",
+      "version": "0.1.0",
+      "description": "Schema-first LLM development standards for coding assistants.",
+      "source": "./"
+    }
+  ]
+}
