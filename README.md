@@ -1,6 +1,6 @@
 # schema-outputkit
 
-English | [Simplified Chinese](README.zh-CN.md)
+English | [简体中文](README.zh-CN.md)
 
 Schema-first LLM development standards for AI coding assistants. One portable Skill helps assistants implement consistent business output contracts across providers and models, using the application's existing SDKs and validators.
 

@@ -95,7 +95,8 @@ def validate_repository(root):
     for relative in ("README.md", "README.zh-CN.md", "CHANGELOG.md", "docs/installation.md", "docs/development.md"):
         path = root / relative
         text = path.read_text(encoding="utf-8")
-        require(not CJK.search(text) or relative == "README.zh-CN.md", "Unexpected translated prose: " + relative)
+        prose = text.replace("[简体中文](README.zh-CN.md)", "") if relative == "README.md" else text
+        require(not CJK.search(prose) or relative == "README.zh-CN.md", "Unexpected translated prose: " + relative)
         for target in re.findall(r"\]\(([^)]+)\)", text):
             if "://" in target or target.startswith("#"):
                 continue
