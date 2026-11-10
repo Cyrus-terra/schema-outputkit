@@ -227,23 +227,19 @@ class HookTests(unittest.TestCase):
         output = self.edit('client.chat.completions.create(api_key="' + secret + '")')
         self.assertNotIn(secret, json.dumps(output))
 
-    def test_related_events_include_core_standards_without_payloads(self):
+    def test_related_events_emit_compact_discovery_reminders(self):
         outputs = (
             self.prompt("修复 LLM 重试预算"),
             self.edit("client.chat.completions.create()"),
         )
         for output in outputs:
             context = output["additionalContext"]
-            for requirement in (
-                "caller-owned", "request-local", "total attempts", "SDK retries",
-                "overall deadline", "missing usage is unknown", "not a hard spending cap",
-                "cumulative output size", "ambiguous extraction", "Allowlist diagnostics",
-            ):
-                with self.subTest(requirement=requirement):
-                    self.assertIn(requirement, context)
-            self.assertLessEqual(len(context.encode("utf-8")), 4096)
-        session = self.invoke({"hook_event_name": "SessionStart"})
-        self.assertLess(len(session["additionalContext"]), len(outputs[0]["additionalContext"]))
+            self.assertIn(str(ROOT / "skills/schema-outputkit/SKILL.md"), context)
+            self.assertIn("reuse complete unchanged rules", context)
+            self.assertIn("only changed mechanisms", context)
+            self.assertIn("without rerunning checks", context)
+            self.assertLessEqual(len(context.encode("utf-8")), 1024)
+        self.assertEqual(outputs[0]["additionalContext"], outputs[1]["additionalContext"])
 
     def test_cross_model_requests_and_canonical_contract_reminders(self):
         for prompt in (
@@ -256,17 +252,14 @@ class HookTests(unittest.TestCase):
                 output = self.prompt(prompt)
                 self.assertIsNotNone(output)
                 context = output["additionalContext"]
-                for requirement in (
-                    "canonical business schema", "verified capabilities",
-                    "unchanged canonical schema", "stable business serialization",
-                    "unsupported contracts must fail explicitly",
-                ):
-                    self.assertIn(requirement, context)
+                self.assertIn("one canonical business schema", context)
+                self.assertIn("validate final data", context)
+                self.assertIn("If relevant, apply schema-outputkit", context)
         for text in ("千问有什么特点", "解释 GPT 的输出格式", "修改普通表单的统一 Schema 校验"):
             with self.subTest(prompt=text):
                 self.assertIsNone(self.prompt(text))
         context = self.edit("client.chat.completions.create()")['additionalContext']
-        self.assertIn("one canonical business schema across providers and models", context)
+        self.assertIn("one canonical business schema", context)
 
     def test_policy_edits_need_llm_context(self):
         for text in (

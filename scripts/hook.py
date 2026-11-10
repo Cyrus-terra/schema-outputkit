@@ -11,19 +11,11 @@ MAX_ANALYSIS_CHARS = 32 * 1024
 MAX_CALL_SCAN_CHARS = 4096
 MAX_TOTAL_CALL_SCAN_CHARS = 16 * 1024
 MAX_CONTEXT_BYTES = 4096
-CORE_REMINDER = (
-    "Use one canonical business schema across providers and models. Adapt wire schemas "
-    "by verified capabilities; validate final data against the unchanged canonical schema "
-    "and use stable business serialization. Unknown models need verified adapters, not "
-    "brand guesses; unsupported contracts must fail explicitly. "
-    "Preserve caller-owned messages/configuration; keep repair history, counters, "
-    "validation context and stream buffers request-local. Check total attempts including "
-    "SDK retries, per-call timeouts and the overall deadline. When token/cost budgets "
-    "are required, accumulate usage across attempts; missing usage is unknown, and "
-    "post-response accounting is not a hard spending cap. Bound cumulative output size, "
-    "nesting and stream buffers; reject ambiguous extraction. Allowlist diagnostics; "
-    "exceptions and raw responses may contain private inputs. Verify isolation after "
-    "success/failure and concurrency, budget exhaustion and missing usage."
+DEVELOPMENT_REMINDER = (
+    "If relevant, apply schema-outputkit; reuse complete unchanged rules already in context. "
+    "Keep one canonical business schema and validate final data. "
+    "Check only changed mechanisms; reuse applicable results without rerunning checks. "
+    "This heuristic reminder grants no permissions or compatibility evidence."
 )
 SKILL = Path(__file__).resolve().parents[1] / "skills/schema-outputkit/SKILL.md"
 CODE_SUFFIXES = {
@@ -194,27 +186,13 @@ def build_output(payload):
             "runtime validation or provider compatibility checks."
         )
     elif event == "UserPromptSubmit" and relevant_prompt(payload.get("prompt")):
-        message = (
-            "This request may involve LLM output development. Confirm relevance from the "
-            "actual task and load the schema-outputkit Skill if not already loaded. "
-            "Reuse existing schemas and SDKs; choose text, structured data or tool-argument "
-            "contracts by consumer. Validate final data at runtime, bound retries/timeouts, "
-            "and verify actual provider capabilities. This reminder grants no new permissions."
-        )
+        message = DEVELOPMENT_REMINDER
     elif event == "PostToolUse" and relevant_edit(payload):
-        message = (
-            "The code edit contains an LLM integration signal; this is a heuristic reminder, "
-            "not a source audit. Apply the schema-outputkit Skill if relevant and not "
-            "already loaded. Check the affected consumer's contract, final runtime validation, "
-            "effective retry/deadline limits and supported provider mode. Keep free-text "
-            "and tool/stream semantics appropriate to the task."
-        )
+        message = DEVELOPMENT_REMINDER
     else:
         return None
     if not SKILL.is_file():
         return None
-    if event != "SessionStart":
-        message += " " + CORE_REMINDER
     context = message + "\nSkill entry (literal path):\n" + str(SKILL)
     if len(context.encode("utf-8")) > MAX_CONTEXT_BYTES:
         return None

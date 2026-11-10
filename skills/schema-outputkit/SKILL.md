@@ -71,7 +71,7 @@ Use this pipeline for structured results:
 - The accepted structure and serialization contract can be the same while values, accuracy and success rates vary. JSON object key order is not structural compatibility; require deterministic serialization only when a consumer or signature protocol needs it.
 - On refusal, unsupported capability or exhausted repair attempts, use the established typed/sanitized error contract, never a success-shaped object containing invalid or fabricated data. Preserve budget and request-isolation rules while switching providers or modes.
 
-For a new or changed multi-provider integration, replay equivalent local SDK fixtures for configured adapters through the same canonical validator and serializer. Cover valid results, wrong types, missing/extra fields, null/omission, wire-wrapper removal, unknown tool calls and refusals as relevant. Invalid results must be rejected consistently, and changing provider must not change the contract. Separately run authorized checks on actual deployments before claiming compatibility; no fixture or Hook test proves that all models comply.
+For a new or changed multi-provider integration, replay equivalent local SDK fixtures for affected configured adapters through the same canonical validator and serializer; include all configured adapters when the shared canonical contract, validator or serializer changes. Cover valid results, wrong types, missing/extra fields, null/omission, wire-wrapper removal, unknown tool calls and refusals as relevant. Invalid results must be rejected consistently, and changing provider must not change the contract. Separately run authorized checks on actual deployments before claiming compatibility; no fixture or Hook test proves that all models comply.
 
 ## 4. Select a supported request constraint
 
@@ -124,7 +124,9 @@ Bound parsing work before accepting model-controlled output:
 
 ## 9. Verify and report evidence
 
-Choose checks proportionate to the changed boundary. For substantive changes, cover a valid result plus the relevant invalid-field, missing-value, refusal/truncation, exhausted-budget or streaming-finalization path. When those mechanisms change, also check caller input preservation after recovery/failure, concurrent request isolation, retry-to-attempt mapping, missing usage, cumulative size/depth limits, ambiguous extraction and diagnostic redaction. Use project tests and safe local substitutes before real network calls. Do not add tests for unchanged integrations solely to satisfy a generic checklist.
+Loading this Skill or receiving a Hook reminder does not trigger tests or provider calls. Choose the smallest existing local check for the changed boundary, following project-required gates; reuse applicable results from other Skills for the same code, configuration and environment. Do not rerun checks after a reminder alone or add tests for unchanged integrations.
+
+For substantive contract/parsing changes, cover a valid result and a relevant invalid or missing-value case. Select refusal/truncation, exhausted-budget or streaming-finalization paths only when the affected mechanism changes. Changes to shared retry/state handling also need relevant input-preservation and concurrent-isolation checks; budget, extraction/size/depth and diagnostic changes need their corresponding failure cases. This is a selection guide, not a mandatory suite for every LLM edit. Use project tests and safe local substitutes before real network calls.
 
 Real provider checks require an authorized environment and credentials; never print or store credentials, prompts, private inputs or complete raw responses. Do not call external models just to load this Skill. Report local tests separately from actual provider compatibility and client behavior evaluations.
 

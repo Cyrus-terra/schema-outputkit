@@ -16,7 +16,7 @@ Run the commands in the README from the repository root. Python 3.9+ and Node 18
 
 Native plugin and marketplace validators must target the actual descriptor files separately: validating the root may select only the marketplace. A valid manifest is not proof that a client merges/discovers Hooks correctly. For live checks, inspect exactly one session reminder and verify prompt/edit events, scope, update/removal and duplicate-install behavior without bypassing permissions.
 
-Hook budgets are local parser/reminder safeguards: 256 KiB stdin, 32 Ki characters analyzed, 4096 characters per candidate call, 16 Ki cumulative call inspection and 4096 UTF-8 context bytes. They do not enforce application token budgets. Shared session configuration omits timeout because clients use different units. Development Hooks use five seconds on Claude/CodeBuddy. Missing inputs/Skill and unsupported events silently produce no context.
+Hook budgets are local parser/reminder safeguards: 256 KiB stdin, 32 Ki characters analyzed, 4096 characters per candidate call, 16 Ki cumulative call inspection and 4096 UTF-8 context bytes. They do not enforce application token budgets. Shared session configuration omits timeout because clients use different units. Development Hooks use five seconds on Claude/CodeBuddy. Missing inputs/Skill and unsupported events silently produce no context. Development events emit the same compact discovery reminder, not a repeated testing checklist. Hooks remain stateless and may emit again; the Skill instructs the agent to reuse loaded rules and applicable checks, not to rerun verification after reminders alone.
 
 ## Preparing a publication
 
