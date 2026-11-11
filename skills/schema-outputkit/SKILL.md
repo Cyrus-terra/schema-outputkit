@@ -124,7 +124,7 @@ Bound parsing work before accepting model-controlled output:
 
 ## 9. Verify and report evidence
 
-Loading this Skill or receiving a Hook reminder does not trigger tests or provider calls. Choose the smallest existing local check for the changed boundary, following project-required gates; reuse applicable results from other Skills for the same code, configuration and environment. Do not rerun checks after a reminder alone or add tests for unchanged integrations.
+The current agent owns task-level verification. Use this Skill's contract and boundary requirements as implementation constraints and risk criteria within that workflow, combining them with other applicable Skills. Do not add a separate closing review, full-rule checklist or review agent for this Skill. Choose the smallest existing local check for the changed boundary and follow project-required gates; reuse applicable results for the same code, configuration and environment. Loading or receiving a Hook reminder does not add a verification round or trigger provider calls. Do not add tests for unchanged integrations.
 
 For substantive contract/parsing changes, cover a valid result and a relevant invalid or missing-value case. Select refusal/truncation, exhausted-budget or streaming-finalization paths only when the affected mechanism changes. Changes to shared retry/state handling also need relevant input-preservation and concurrent-isolation checks; budget, extraction/size/depth and diagnostic changes need their corresponding failure cases. This is a selection guide, not a mandatory suite for every LLM edit. Use project tests and safe local substitutes before real network calls.
 
